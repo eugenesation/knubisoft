@@ -13,6 +13,7 @@ public class LuckyTicket {
 
             if (number1 + number2 + number3 == number4 + number5 + number6) {
                 sum++;
+                System.out.println(i);
             }
         }
         System.out.println("Рулон билетов с номерами от 000000 до 999999 имеет " + sum + " счастливых билетов.");

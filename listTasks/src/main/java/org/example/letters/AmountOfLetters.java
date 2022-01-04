@@ -22,4 +22,5 @@ public class AmountOfLetters {
         return letterContainer;
 
     }
+
 }

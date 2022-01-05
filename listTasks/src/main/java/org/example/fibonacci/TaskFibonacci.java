@@ -1,9 +1,9 @@
 package org.example.fibonacci;
 
 public class TaskFibonacci {
-    public static void sequence() {
-        int firstValue = 1;
-        int secondValue = 1;
+    public static int sequence(int firstValue, int secondValue) {
+        firstValue = 1;
+        secondValue = 1;
         int value;
         int n = 10;
         System.out.println(firstValue + " " + secondValue);
@@ -14,5 +14,7 @@ public class TaskFibonacci {
             secondValue = value;
         }
         System.out.println();
+        return secondValue;
     }
+
 }

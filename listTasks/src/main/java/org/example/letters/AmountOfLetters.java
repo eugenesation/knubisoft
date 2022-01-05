@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AmountOfLetters {
-    public static Map<Character, Long> count() {
-        String example = "Hello motherfucker";
+    public static Map<Character, Long> count(String example) {
         Map<Character, Long> letterContainer = new HashMap<>();
         char[] exampleToArray = example.toCharArray();
 

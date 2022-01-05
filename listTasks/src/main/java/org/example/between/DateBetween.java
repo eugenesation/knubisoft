@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class DateBetween {
     public static boolean isDateBetween() throws ParseException {
-        String dateFirst = "2025 10 13";
+        String dateFirst = "2025 16 10";
         String dateSecond = "2023 05 05";
-        String dateBetween = "2017 03 03";
+        String dateBetween = "2024 03 03";
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy mm dd");
         Date firstOne = simpleDateFormat.parse(dateFirst);

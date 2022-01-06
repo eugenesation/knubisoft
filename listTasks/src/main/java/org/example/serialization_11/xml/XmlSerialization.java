@@ -7,13 +7,8 @@ import org.example.serialization_11.object.SerializableObject;
 import java.io.IOException;
 
 public class XmlSerialization {
-    public static void serialize() {
+    public static String serialize(SerializableObject serializableObject) {
         XmlMapper xmlMapper = new XmlMapper();
-
-        SerializableObject serializableObject = new SerializableObject();
-        serializableObject.setId(1);
-        serializableObject.setName("Kolyan");
-        serializableObject.setSurname("Vovan");
 
         String xmlString = null;
         try {
@@ -24,18 +19,20 @@ public class XmlSerialization {
 
         System.out.println(xmlString);
 
+        return xmlString;
     }
 
-    public static void deSerialize() {
+    public static SerializableObject deSerialize(String xml) {
         XmlMapper xmlMapper = new XmlMapper();
 
-        String xml = "<SerializableObject><id>1</id><name>Kolyan</name><surname>Vovan</surname></SerializableObject>";
         try {
-            SerializableObject object = xmlMapper.readValue(xml, SerializableObject.class);
-            System.out.println(object);
+            SerializableObject serializableObject = xmlMapper.readValue(xml, SerializableObject.class);
+            System.out.println(serializableObject);
+            return serializableObject;
         } catch (IOException e) {
             e.getMessage();
         }
+        return null;
 
     }
 }

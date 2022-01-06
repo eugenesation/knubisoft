@@ -2,15 +2,14 @@ package org.example.hugeinfo_12;
 
 import java.io.FileReader;
 import java.io.StreamTokenizer;
-import java.util.HashMap;
 import java.util.Map;
 
 public class SymbolsCounterFromEntireFile {
 
-    public static Map<Character, Long> count() {
+    public static Map<Character, Long> count(Map<Character, Long> letterContainer, FileReader fileReader) {
         long startTime = System.currentTimeMillis();
-        Map<Character, Long> letterContainer = new HashMap<>();
-        try (FileReader fileReader = new FileReader("listTasks/data.txt");) {
+
+        try (fileReader) {
             StreamTokenizer st = new StreamTokenizer(fileReader);
             st.resetSyntax();
             int token = 0;
@@ -32,7 +31,7 @@ public class SymbolsCounterFromEntireFile {
             Long amountOfCharacters = pair.getValue();
             System.out.println(character + " " + amountOfCharacters);
         }
-        System.out.println( "Execution time: " + (double) (System.currentTimeMillis() - startTime));
+        System.out.println("Execution time: " + (double) (System.currentTimeMillis() - startTime));
         return letterContainer;
 
     }

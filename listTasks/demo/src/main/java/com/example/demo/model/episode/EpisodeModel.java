@@ -10,8 +10,8 @@ import java.util.List;
 public class EpisodeModel {
     private String air_date;
 
-    @ManyToMany
-    private List<CharacterModel> characters;
+    @ManyToOne
+    private CharacterModel characterModel;
 
     private String created;
 
@@ -36,13 +36,21 @@ public class EpisodeModel {
         this.air_date = air_date;
     }
 
-    public List<CharacterModel> getCharacters() {
-        return characters;
+    public CharacterModel getCharacterModel() {
+        return characterModel;
     }
 
-    public void setCharacters(List<CharacterModel> characters) {
-        this.characters = characters;
+    public void setCharacterModel(CharacterModel characterModel) {
+        this.characterModel = characterModel;
     }
+
+    //    public List<CharacterModel> getCharacters() {
+//        return characters;
+//    }
+//
+//    public void setCharacters(List<CharacterModel> characters) {
+//        this.characters = characters;
+//    }
 
     public String getCreated() {
         return created;
@@ -88,7 +96,7 @@ public class EpisodeModel {
     public String toString() {
         return "EpisodeModel{" +
                 "air_date='" + air_date + '\'' +
-                ", characters=" + characters +
+                ", characters=" + characterModel +
                 ", created='" + created + '\'' +
                 ", episode='" + episode + '\'' +
                 ", id=" + id +

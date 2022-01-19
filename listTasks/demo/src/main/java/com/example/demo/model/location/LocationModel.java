@@ -23,19 +23,28 @@ public class LocationModel {
 
     private String url;
 
-    @OneToMany
-    private List<CharacterModel> characterModels;
+    @OneToOne
+    private CharacterModel characterModel;
 
     public LocationModel() {
     }
 
-    public List<CharacterModel> getCharacterModels() {
-        return characterModels;
+    public CharacterModel getCharacterModel() {
+        return characterModel;
     }
 
-    public void setCharacterModels(List<CharacterModel> characterModels) {
-        this.characterModels = characterModels;
+    public void setCharacterModel(CharacterModel characterModel) {
+        this.characterModel = characterModel;
     }
+
+
+//    public List<CharacterModel> getCharacterModels() {
+//        return characterModels;
+//    }
+//
+//    public void setCharacterModels(List<CharacterModel> characterModels) {
+//        this.characterModels = characterModels;
+//    }
 
     public String getCreated() {
         return created;
@@ -94,7 +103,7 @@ public class LocationModel {
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", url='" + url + '\'' +
-                ", characterModels=" + characterModels +
+                ", characterModels=" + characterModel +
                 '}';
     }
 }

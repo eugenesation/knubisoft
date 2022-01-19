@@ -1,4 +1,3 @@
-
 package com.example.demo.entity.character;
 
 import java.util.List;

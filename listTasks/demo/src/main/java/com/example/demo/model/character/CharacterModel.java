@@ -13,7 +13,7 @@ import java.util.List;
 public class CharacterModel {
     private String created;
 
-    @ManyToMany
+    @OneToMany
     private List<EpisodeModel> episodes;
 
     private String gender;
@@ -24,7 +24,7 @@ public class CharacterModel {
 
     private String image;
 
-    @ManyToOne
+    @OneToOne
     private LocationModel locationModel;
 
     private String name;
@@ -82,6 +82,15 @@ public class CharacterModel {
     public void setImage(String image) {
         this.image = image;
     }
+
+//    public List<LocationModel> getLocationModel() {
+//        return locationModel;
+//    }
+//
+//    public void setLocationModel(List<LocationModel> locationModel) {
+//        this.locationModel = locationModel;
+//    }
+
 
     public LocationModel getLocationModel() {
         return locationModel;

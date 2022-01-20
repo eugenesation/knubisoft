@@ -3,22 +3,30 @@ package com.example.demo.model.episode;
 import com.example.demo.model.character.CharacterModel;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "episodes")
 public class EpisodeModel {
-    private String air_date;
 
-    @ManyToOne
-    private CharacterModel characterModel;
+    private LocalDateTime air_date;
 
-    private String created;
+    @ManyToMany
+    @JoinTable(
+            name = "character_episode",
+            joinColumns = @JoinColumn(name = "character_id"),
+            inverseJoinColumns = @JoinColumn(name = "episode_id"))
+    private List<CharacterModel> characterModel;
+
+    private LocalDateTime created;
 
     private String episode;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "episode_id")
     private Long id;
 
     private String name;
@@ -28,35 +36,27 @@ public class EpisodeModel {
     public EpisodeModel() {
     }
 
-    public String getAir_date() {
+    public LocalDateTime getAir_date() {
         return air_date;
     }
 
-    public void setAir_date(String air_date) {
+    public void setAir_date(LocalDateTime air_date) {
         this.air_date = air_date;
     }
 
-    public CharacterModel getCharacterModel() {
+    public List<CharacterModel> getCharacterModel() {
         return characterModel;
     }
 
-    public void setCharacterModel(CharacterModel characterModel) {
+    public void setCharacterModel(List<CharacterModel> characterModel) {
         this.characterModel = characterModel;
     }
 
-    //    public List<CharacterModel> getCharacters() {
-//        return characters;
-//    }
-//
-//    public void setCharacters(List<CharacterModel> characters) {
-//        this.characters = characters;
-//    }
-
-    public String getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 

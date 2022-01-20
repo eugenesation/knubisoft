@@ -1,19 +1,19 @@
 package com.example.demo.model.character;
 
-import com.example.demo.entity.character.Origin;
 import com.example.demo.model.episode.EpisodeModel;
 import com.example.demo.model.location.LocationModel;
-import com.example.demo.model.origin.OriginModel;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "characters")
 public class CharacterModel {
-    private String created;
 
-    @OneToMany
+    private LocalDateTime created;
+
+    @ManyToMany
     private List<EpisodeModel> episodes;
 
     private String gender;
@@ -24,13 +24,15 @@ public class CharacterModel {
 
     private String image;
 
-    @OneToOne
-    private LocationModel locationModel;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private LocationModel location;
+
+    @ManyToOne
+    @JoinColumn(name = "origin_id")
+    private LocationModel origin;
 
     private String name;
-
-    @OneToOne
-    private OriginModel originModel;
 
     private String species;
 
@@ -38,16 +40,14 @@ public class CharacterModel {
 
     private String type;
 
-    private String url;
-
     public CharacterModel() {
     }
 
-    public String getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
@@ -83,21 +83,20 @@ public class CharacterModel {
         this.image = image;
     }
 
-//    public List<LocationModel> getLocationModel() {
-//        return locationModel;
-//    }
-//
-//    public void setLocationModel(List<LocationModel> locationModel) {
-//        this.locationModel = locationModel;
-//    }
-
-
-    public LocationModel getLocationModel() {
-        return locationModel;
+    public LocationModel getLocation() {
+        return location;
     }
 
-    public void setLocationModel(LocationModel locationModel) {
-        this.locationModel = locationModel;
+    public void setLocation(LocationModel location) {
+        this.location = location;
+    }
+
+    public LocationModel getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(LocationModel origin) {
+        this.origin = origin;
     }
 
     public String getName() {
@@ -106,14 +105,6 @@ public class CharacterModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public OriginModel getOriginModel() {
-        return originModel;
-    }
-
-    public void setOriginModel(OriginModel originModel) {
-        this.originModel = originModel;
     }
 
     public String getSpecies() {
@@ -140,14 +131,6 @@ public class CharacterModel {
         this.type = type;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     @Override
     public String toString() {
         return "CharacterModel{" +
@@ -156,13 +139,26 @@ public class CharacterModel {
                 ", gender='" + gender + '\'' +
                 ", id=" + id +
                 ", image='" + image + '\'' +
-                ", locationModel=" + locationModel +
+                ", locationModel=" + location +
                 ", name='" + name + '\'' +
-                ", originModel=" + originModel +
                 ", species='" + species + '\'' +
                 ", status='" + status + '\'' +
                 ", type='" + type + '\'' +
-                ", url='" + url + '\'' +
                 '}';
     }
+
+    public enum CharacterStatus {
+        ALIVE,
+        DEAD,
+        UNKNOWN
+    }
+
+    public enum CharacterGender {
+        FEMALE,
+        MALE,
+        GENDERLESS,
+        UNKNOWN
+    }
 }
+
+

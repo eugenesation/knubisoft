@@ -20,29 +20,29 @@ import java.util.List;
 @Component
 public class EpisodeMapper {
 
-    EpisodeRepository episodeRepository;
-
-    @Autowired
-    public EpisodeMapper(EpisodeRepository episodeRepository) {
-        this.episodeRepository = episodeRepository;
-    }
-
-    @Bean
-    public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-        return args -> {
-            Episode episode = restTemplate.getForObject(
-                    "https://rickandmortyapi.com/api/character", Episode.class);
-
-            List<EpisodeResult> episodeResults = episode.getResults();
-
-            for (EpisodeResult episodeResult : episodeResults) {
-                EpisodeModel episodeModel = new EpisodeModel();
-                ModelMapper mapper = new ModelMapper();
-                mapper.map(episodeResult, episodeModel);
-                episodeRepository.save(episodeModel);
-            }
-            System.out.println(episodeResults);
-        };
-    }
+//    EpisodeRepository episodeRepository;
+//
+//    @Autowired
+//    public EpisodeMapper(EpisodeRepository episodeRepository) {
+//        this.episodeRepository = episodeRepository;
+//    }
+//
+//    @Bean
+//    public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
+//        return args -> {
+//            Episode episode = restTemplate.getForObject(
+//                    "https://rickandmortyapi.com/api/character", Episode.class);
+//
+//            List<EpisodeResult> episodeResults = episode.getResults();
+//
+//            for (EpisodeResult episodeResult : episodeResults) {
+//                EpisodeModel episodeModel = new EpisodeModel();
+//                ModelMapper mapper = new ModelMapper();
+//                mapper.map(episodeResult, episodeModel);
+//                episodeRepository.save(episodeModel);
+//            }
+//            System.out.println(episodeResults);
+//        };
+//    }
 
 }

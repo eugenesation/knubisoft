@@ -11,28 +11,34 @@ import java.util.List;
 @Table(name = "characters")
 public class CharacterModel {
 
-    private LocalDateTime created;
-
-    @ManyToMany
-    private List<EpisodeModel> episodes;
-
-    private String gender;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+    private String gender;
+
+    private LocalDateTime created;
+
     private String image;
 
     @ManyToOne
-    @JoinColumn(name = "location_id")
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private LocationModel location;
 
-    @ManyToOne
-    @JoinColumn(name = "origin_id")
-    private LocationModel origin;
+    @ManyToMany(cascade = {
+            CascadeType.ALL
+    })
+    @JoinTable(
+            name = "character_episode",
+            joinColumns = @JoinColumn(name = "character_id"),
+            inverseJoinColumns = @JoinColumn(name = "episode_id"))
+    private List<EpisodeModel> episodes;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "origin_id", referencedColumnName = "id")
+    private LocationModel origin;
 
     private String species;
 
@@ -41,6 +47,14 @@ public class CharacterModel {
     private String type;
 
     public CharacterModel() {
+    }
+
+    public LocationModel getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(LocationModel origin) {
+        this.origin = origin;
     }
 
     public LocalDateTime getCreated() {
@@ -89,14 +103,6 @@ public class CharacterModel {
 
     public void setLocation(LocationModel location) {
         this.location = location;
-    }
-
-    public LocationModel getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(LocationModel origin) {
-        this.origin = origin;
     }
 
     public String getName() {

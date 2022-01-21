@@ -3,7 +3,6 @@ package com.example.demo.model.episode;
 import com.example.demo.model.character.CharacterModel;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -11,16 +10,14 @@ import java.util.List;
 @Table(name = "episodes")
 public class EpisodeModel {
 
-    private LocalDateTime air_date;
+    @Temporal(TemporalType.DATE)
+    private Date air_date;
 
-    @ManyToMany
-    @JoinTable(
-            name = "character_episode",
-            joinColumns = @JoinColumn(name = "character_id"),
-            inverseJoinColumns = @JoinColumn(name = "episode_id"))
+    @ManyToMany(mappedBy = "characters")
     private List<CharacterModel> characterModel;
 
-    private LocalDateTime created;
+    @Temporal(TemporalType.DATE)
+    private Date created;
 
     private String episode;
 
@@ -36,11 +33,19 @@ public class EpisodeModel {
     public EpisodeModel() {
     }
 
-    public LocalDateTime getAir_date() {
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Date getAir_date() {
         return air_date;
     }
 
-    public void setAir_date(LocalDateTime air_date) {
+    public void setAir_date(Date air_date) {
         this.air_date = air_date;
     }
 
@@ -52,11 +57,11 @@ public class EpisodeModel {
         this.characterModel = characterModel;
     }
 
-    public LocalDateTime getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
@@ -84,14 +89,6 @@ public class EpisodeModel {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     @Override
     public String toString() {
         return "EpisodeModel{" +
@@ -101,7 +98,6 @@ public class EpisodeModel {
                 ", episode='" + episode + '\'' +
                 ", id=" + id +
                 ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
                 '}';
     }
 }

@@ -5,6 +5,13 @@ import java.util.List;
 
 public class LocationResult {
 
+//    public LocalDateTime parseredValue() {
+//        ParserDate parserDate = new ParserDate();
+//        return parserDate.parseDate(created);
+//    }
+
+
+
     private String created;
 
     private String dimension;
@@ -77,7 +84,7 @@ public class LocationResult {
 
     @Override
     public String toString() {
-        return "LocationResult{" +
+        return System.lineSeparator() + "LocationResult{" +
                 "created='" + created + '\'' +
                 ", dimension='" + dimension + '\'' +
                 ", id=" + id +
@@ -85,6 +92,8 @@ public class LocationResult {
                 ", residents=" + residents +
                 ", type='" + type + '\'' +
                 ", url='" + url + '\'' +
-                '}';
+                '}' + System.lineSeparator() + "===================";
     }
+
+
 }

@@ -1,15 +1,14 @@
 package com.example.demo.model.location;
 
-import com.example.demo.model.character.CharacterModel;
-
 import javax.persistence.*;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Table(name = "locations")
 public class LocationModel {
 
-    private String created;
+    @Temporal(TemporalType.DATE)
+    private Date created;
 
     private String dimension;
 
@@ -21,27 +20,15 @@ public class LocationModel {
 
     private String type;
 
-    @OneToMany
-    private List<CharacterModel> characterModels;
-
-
 
     public LocationModel() {
     }
 
-    public List<CharacterModel> getCharacterModels() {
-        return characterModels;
-    }
-
-    public void setCharacterModels(List<CharacterModel> characterModels) {
-        this.characterModels = characterModels;
-    }
-
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
@@ -85,7 +72,6 @@ public class LocationModel {
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", characterModels=" + characterModels +
                 '}';
     }
 }

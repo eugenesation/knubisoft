@@ -2,6 +2,7 @@ package com.example.demo.model.character;
 
 import com.example.demo.model.episode.EpisodeModel;
 import com.example.demo.model.location.LocationModel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +13,6 @@ import java.util.List;
 public class CharacterModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -23,7 +23,7 @@ public class CharacterModel {
 
     private String image;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private LocationModel location;
 
@@ -34,6 +34,7 @@ public class CharacterModel {
             name = "character_episode",
             joinColumns = @JoinColumn(name = "character_id"),
             inverseJoinColumns = @JoinColumn(name = "episode_id"))
+    @JsonBackReference
     private List<EpisodeModel> episodes;
 
     @ManyToOne

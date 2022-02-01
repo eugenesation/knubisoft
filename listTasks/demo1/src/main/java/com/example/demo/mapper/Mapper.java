@@ -44,52 +44,53 @@ public class Mapper {
             ModelMapper modelMapper = new ModelMapper();
 
             Location location = restTemplate.getForObject(
-                    "https://rickandmortyapi.com/api/location/", Location.class);
+                    "https://rickandmortyapi.com/api/location", Location.class);
 
-            List<LocationResult> locationResults = location.getResults();
+            List<Location> locations = new ArrayList<>();
 
             while (true) {
+                locations.add(location);
+                location = restTemplate.getForObject(location.getInfo().getNext(), Location.class);
+
                 if (location.getInfo().getNext() == null) {
-                    location = restTemplate.getForObject(location.getInfo().getNext(), Location.class);
-                    locationResults = location.getResults();
-
-                    for (LocationResult locationResult : locationResults) {
-                        locationRepository.save(modelMapper.map(locationResult, LocationModel.class));
-                    }
+                    locations.add(location);
                     break;
-                } else {
-                    location = restTemplate.getForObject(location.getInfo().getNext(), Location.class);
-                    locationResults = location.getResults();
-
-                    for (LocationResult locationResult : locationResults) {
-                        locationRepository.save(modelMapper.map(locationResult, LocationModel.class));
-                    }
                 }
             }
+
+            List<LocationModel> locationModels = new ArrayList<>();
+            locations.forEach(pageLocation -> {
+                List<LocationResult> locationResults = pageLocation.getResults();
+                locationResults.forEach(result -> {
+                    LocationModel locationModel = modelMapper.map(result, LocationModel.class);
+                    locationModels.add(locationModel);
+                });
+            });
+            locationRepository.saveAll(locationModels);
 
             Episode episode = restTemplate.getForObject("https://rickandmortyapi.com/api/episode", Episode.class);
 
-            List<EpisodeResult> episodeResults;
+            List<Episode> episodes = new ArrayList<>();
 
             while (true) {
+                episodes.add(episode);
+                episode = restTemplate.getForObject(episode.getInfo().getNext(), Episode.class);
+
                 if (episode.getInfo().getNext() == null) {
-                    episode = restTemplate.getForObject(episode.getInfo().getNext(), Episode.class);
-                    episodeResults = episode.getResults();
-
-                    for (EpisodeResult episodeResult : episodeResults) {
-                        episodeRepository.save(modelMapper.map(episodeResult, EpisodeModel.class));
-                    }
+                    episodes.add(episode);
                     break;
-                } else {
-                    episode = restTemplate.getForObject(episode.getInfo().getNext(), Episode.class);
-                    episodeResults = episode.getResults();
-
-                    for (EpisodeResult episodeResult : episodeResults) {
-                        episodeRepository.save(modelMapper.map(episodeResult, EpisodeModel.class));
-                    }
-                    continue;
                 }
             }
+
+            List<EpisodeModel> episodeModels = new ArrayList<>();
+            episodes.forEach(pageEpisode -> {
+                List<EpisodeResult> episodeResults = pageEpisode.getResults();
+                episodeResults.forEach(result -> {
+                    EpisodeModel locationModel = modelMapper.map(result, EpisodeModel.class);
+                    episodeModels.add(locationModel);
+                });
+            });
+            episodeRepository.saveAll(episodeModels);
 
             Character character = restTemplate.getForObject("https://rickandmortyapi.com/api/character", Character.class);
 
@@ -97,7 +98,6 @@ public class Mapper {
 
             for (CharacterResult characterResult : characterResults) {
                 CharacterModel characterModel = modelMapper.map(characterResult, CharacterModel.class);
-                // location
                 Optional<LocationModel> optionalLocationModel = locationRepository.findByName(characterModel.getLocation().getName());
                 if (optionalLocationModel.isPresent()) {
                     characterModel.setLocation(optionalLocationModel.get());

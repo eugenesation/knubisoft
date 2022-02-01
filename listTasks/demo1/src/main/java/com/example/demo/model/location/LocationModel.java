@@ -1,10 +1,15 @@
 package com.example.demo.model.location;
 
+import com.example.demo.model.character.CharacterModel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "locations")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LocationModel {
 
     @Temporal(TemporalType.DATE)
@@ -16,12 +21,22 @@ public class LocationModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany
+    private List<CharacterModel> characterModels;
+
     private String name;
 
     private String type;
 
-
     public LocationModel() {
+    }
+
+    public List<CharacterModel> getCharacterModels() {
+        return characterModels;
+    }
+
+    public void setCharacterModels(List<CharacterModel> characterModels) {
+        this.characterModels = characterModels;
     }
 
     public Date getCreated() {

@@ -1,20 +1,24 @@
 package com.example.demo.model.episode;
 
-import com.example.demo.model.character.CharacterModel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "episodes")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EpisodeModel {
 
-    @Temporal(TemporalType.DATE)
     private Date air_date;
 
-    @ManyToMany(mappedBy = "episodes")
-    private List<CharacterModel> characterModel;
+//    @ManyToMany(mappedBy = "episodes")
+//    @JsonManagedReference
+//    private List<CharacterModel> characterModel;
 
     @Temporal(TemporalType.DATE)
     private Date created;
@@ -45,16 +49,15 @@ public class EpisodeModel {
         return air_date;
     }
 
-    public void setAir_date(Date air_date) {
-        this.air_date = air_date;
-    }
-
-    public List<CharacterModel> getCharacterModel() {
-        return characterModel;
-    }
-
-    public void setCharacterModel(List<CharacterModel> characterModel) {
-        this.characterModel = characterModel;
+    public void setAir_date(String air_date) {
+        DateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd yyyy", Locale.US);
+        Date newAirDate = null;
+        try {
+            newAirDate = simpleDateFormat.parse(air_date);
+        } catch (ParseException e) {
+            e.getMessage();
+        }
+        this.air_date = newAirDate;
     }
 
     public Date getCreated() {
@@ -93,7 +96,6 @@ public class EpisodeModel {
     public String toString() {
         return "EpisodeModel{" +
                 "air_date='" + air_date + '\'' +
-                ", characters=" + characterModel +
                 ", created='" + created + '\'' +
                 ", episode='" + episode + '\'' +
                 ", id=" + id +

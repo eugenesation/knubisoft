@@ -3,11 +3,9 @@ package com.example.demo.controller.character;
 import com.example.demo.model.character.CharacterModel;
 import com.example.demo.repository.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,8 +23,12 @@ public class CharacterController {
         return characterRepository.findAll();
     }
 
-    @GetMapping(value = "/getCharacters/{id}")
-    public CharacterModel getLocationById(@PathVariable Long id) {
-        return characterRepository.getById(id);
+    @GetMapping(value = "/getCharactersById")
+    public List<CharacterModel> getLocationById(@RequestParam("id") List<String> id) {
+        List<CharacterModel> characterModels = new ArrayList<>();
+        for (String idElement : id) {
+            characterModels.add(characterRepository.getById(Long.valueOf(idElement)));
+        }
+        return characterModels;
     }
 }

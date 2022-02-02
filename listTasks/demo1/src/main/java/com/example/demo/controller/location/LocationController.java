@@ -2,9 +2,6 @@ package com.example.demo.controller.location;
 
 import com.example.demo.model.location.LocationModel;
 import com.example.demo.repository.LocationRepository;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,12 +32,4 @@ public class LocationController {
     public LocationModel getLocationById(@PathVariable Long id) {
         return locationRepository.getById(id);
     }
-
-    LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder()
-            .build(new CacheLoader<String, String>() {
-                @Override
-                public String load(final String s) throws Exception {
-                    return getAll().toString();
-                }
-            });
 }

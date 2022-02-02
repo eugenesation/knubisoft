@@ -3,8 +3,8 @@ package com.example.demo.entity.character;
 
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import javax.annotation.Generated;
+import java.util.List;
 
 @Component
 @Generated("net.hexar.json2pojo")

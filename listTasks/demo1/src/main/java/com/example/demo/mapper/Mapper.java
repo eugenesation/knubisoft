@@ -86,45 +86,60 @@ public class Mapper {
             episodes.forEach(pageEpisode -> {
                 List<EpisodeResult> episodeResults = pageEpisode.getResults();
                 episodeResults.forEach(result -> {
-                    EpisodeModel locationModel = modelMapper.map(result, EpisodeModel.class);
-                    episodeModels.add(locationModel);
+                    EpisodeModel episodeModel = modelMapper.map(result, EpisodeModel.class);
+                    episodeModels.add(episodeModel);
                 });
             });
             episodeRepository.saveAll(episodeModels);
 
+
             Character character = restTemplate.getForObject("https://rickandmortyapi.com/api/character", Character.class);
 
-            List<CharacterResult> characterResults = character.getResults();
+            List<Character> characterList = new ArrayList<>();
 
-            for (CharacterResult characterResult : characterResults) {
-                CharacterModel characterModel = modelMapper.map(characterResult, CharacterModel.class);
-                Optional<LocationModel> optionalLocationModel = locationRepository.findByName(characterModel.getLocation().getName());
-                if (optionalLocationModel.isPresent()) {
-                    characterModel.setLocation(optionalLocationModel.get());
-                } else {
-                    characterModel.setLocation(null);
+            while (true) {
+                characterList.add(character);
+                character = restTemplate.getForObject(character.getInfo().getNext(), Character.class);
+
+                if (character.getInfo().getNext() == null) {
+                    characterList.add(character);
+                    break;
                 }
-
-                Optional<LocationModel> optionalOriginModel = locationRepository.findByName(characterModel.getOrigin().getName());
-                if (optionalOriginModel.isPresent()) {
-                    characterModel.setOrigin(optionalOriginModel.get());
-                } else {
-                    characterModel.setOrigin(null);
-                }
-
-                ArrayList<EpisodeModel> episodeList = new ArrayList<>();
-
-                characterResult.getEpisode().forEach(url -> {
-
-                    Optional<EpisodeModel> episodeModel = episodeRepository.findByUrl(url);
-                    episodeModel.ifPresent(episodeList::add);
-
-                });
-                characterModel.setEpisodes(episodeList);
-
-                characterRepository.save(characterModel);
             }
 
+            List<CharacterModel> characterModels = new ArrayList<>();
+            characterList.forEach(pageCharacter -> {
+                List<CharacterResult> characterResults = pageCharacter.getResults();
+                characterResults.forEach(result -> {
+                    CharacterModel characterModel = modelMapper.map(result, CharacterModel.class);
+                    Optional<LocationModel> optionalLocationModel = locationRepository.findByName(characterModel.getLocation().getName());
+
+                    if (optionalLocationModel.isPresent()) {
+                        characterModel.setLocation(optionalLocationModel.get());
+                    } else {
+                        characterModel.setLocation(null);
+                    }
+
+                    Optional<LocationModel> optionalOriginModel = locationRepository.findByName(characterModel.getOrigin().getName());
+                    if (optionalOriginModel.isPresent()) {
+                        characterModel.setOrigin(optionalOriginModel.get());
+                    } else {
+                        characterModel.setOrigin(null);
+                    }
+
+                    ArrayList<EpisodeModel> episodeList = new ArrayList<>();
+
+                    result.getEpisode().forEach(url -> {
+
+                        Optional<EpisodeModel> episodeModel = episodeRepository.findByUrl(url);
+                        episodeModel.ifPresent(episodeList::add);
+
+                    });
+                    characterModel.setEpisodes(episodeList);
+                    characterModels.add(characterModel);
+                });
+            });
+            characterRepository.saveAll(characterModels);
         };
     }
 

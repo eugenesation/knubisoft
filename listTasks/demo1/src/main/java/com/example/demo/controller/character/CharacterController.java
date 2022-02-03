@@ -24,7 +24,7 @@ public class CharacterController {
     }
 
     @GetMapping(value = "/getCharactersById")
-    public List<CharacterModel> getLocationById(@RequestParam("id") List<String> id) {
+    public List<CharacterModel> getCharacterById(@RequestParam("id") List<String> id) {
         List<CharacterModel> characterModels = new ArrayList<>();
         for (String idElement : id) {
             characterModels.add(characterRepository.getById(Long.valueOf(idElement)));

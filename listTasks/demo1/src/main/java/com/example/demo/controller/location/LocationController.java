@@ -4,11 +4,9 @@ import com.example.demo.model.location.LocationModel;
 import com.example.demo.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,9 +25,13 @@ public class LocationController {
         return locationRepository.findAll();
     }
 
-    @GetMapping(value = "/getLocation/{id}")
+    @GetMapping(value = "/getLocation/{ids}")
     @Cacheable("oneLocation")
-    public LocationModel getLocationById(@PathVariable Long id) {
-        return locationRepository.getById(id);
+    public List<LocationModel> getLocationById(@PathVariable("ids") List<String> id) {
+        List<LocationModel> locationModels = new ArrayList<>();
+        for (String idElement : id) {
+            locationModels.add(locationRepository.getById(Long.valueOf(idElement)));
+        }
+        return locationModels;
     }
 }

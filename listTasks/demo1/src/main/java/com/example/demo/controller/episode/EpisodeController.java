@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,8 +26,12 @@ public class EpisodeController {
         return episodeRepository.findAll();
     }
 
-    @GetMapping(value = "/getepisodes/{id}")
-    public EpisodeModel getLocationById(@PathVariable Long id) {
-        return episodeRepository.getById(id);
+    @GetMapping(value = "/getepisodes/{ids}")
+    public List<EpisodeModel> getLocationById(@PathVariable("ids") List<String> id) {
+        List<EpisodeModel> episodeModels = new ArrayList<>();
+        for (String idElement : id) {
+            episodeModels.add(episodeRepository.getById(Long.valueOf(idElement)));
+        }
+        return episodeModels;
     }
 }

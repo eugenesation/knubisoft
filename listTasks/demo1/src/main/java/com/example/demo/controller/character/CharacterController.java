@@ -23,8 +23,8 @@ public class CharacterController {
         return characterRepository.findAll();
     }
 
-    @GetMapping(value = "/getCharactersById")
-    public List<CharacterModel> getCharacterById(@RequestParam("id") List<String> id) {
+    @GetMapping(value = "/getCharactersById/{ids}")
+    public List<CharacterModel> getCharacterById(@PathVariable("ids") List<String> id) {
         List<CharacterModel> characterModels = new ArrayList<>();
         for (String idElement : id) {
             characterModels.add(characterRepository.getById(Long.valueOf(idElement)));
